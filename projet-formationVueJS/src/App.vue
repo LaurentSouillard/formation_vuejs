@@ -1,47 +1,85 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+  <h1>Bonjour {{ firstName.toUpperCase() }} compteur : {{ count }}</h1>
+  <!-- pas de .value dans {{  }}-->
+  <p>ça va ?</p>
+  <button @click="count++">Increment</button>
+  <button @click="decrement">Decrement</button>
+  <!--<div v-show="count > 5">Bravo !</div>-->
+  <div v-if="count < 5">Encore !</div>
+  <div v-else-if="count > 5">Bravo !</div>
+  <div v-else>Presque !</div>
+  <ul><li v-for="movie in movies" :key="movie">
 
-  <main>
-    <TheWelcome />
-  </main>
+    {{ movie }} <button @click="deleteMovie(movie)">supprimer</button>
+  </li></ul>
+  <button @click="sortMovies">Sort</button>
+  <form action="" @submit.prevent="addMovie">
+    <input type="text" placeholder="New" v-model="movieName"> {{ movieName }}
+    <button>add</button>
+  </form>
+  <hr>
+  <ul>
+    <li>{{ person.firstName }}</li>
+    <li>{{ person.lastName }}</li>
+    <li>{{ person.age }}</li>
+    </ul>
+
+    <button @click.prevent="randomAge">Changer âge</button>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<script setup>
+import {ref} from 'vue'
+
+const person = ref({
+  firstName: 'John',
+  lastName: 'Doe',
+  age: 20
+})
+
+const randomAge = () => {
+  person.value.age = Math.round(Math.random() * 100)
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+const count = ref(0)
+const increment = () => {
+  count.value++
+};
+const movies = ref([
+  'Matix',
+  'Lilo',
+  'Titanic'
+])
+const decrement = () => {
+  count.value--
+};
+const firstName = "John"
+const movieName = ref('')
+const deleteMovie = (movie) => {
+  movies.value = movies.value.filter(m => m != movie)
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+const sortMovies = () => {
+  movies.value.sort((a,b) => a > b ? 1 : -1)
 }
+
+const addMovie = () => {
+  
+  movies.value.push(movieName.value)
+  movieName.value = ''
+}
+
+/*const addMovie = (event) => {
+  event.preventDefault()
+  movies.value.push(movieName.value)
+  movieName.value = ''
+}*/
+</script>
+
+<style>
+
+h1{
+  color: brown;
+}
+
 </style>
