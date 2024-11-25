@@ -1,4 +1,21 @@
 <template>
+  <h1>TODO LIST</h1>
+  <form action="" @submit.prevent="addTodo">
+    <fieldset role="group">
+    <input type="text" placeholder="Tâche à effectuer" v-model="todo">
+    <button>Ajouter</button>
+  </fieldset>
+  </form>
+  <p v-if="todos.length = 0">La liste est vide</p>
+  <div v-else>
+  <ul>
+    <li v-for="todo in todos">
+      <label for="">{{ todo.title }}</label>
+    </li>
+  </ul>
+</div>
+<hr>
+
 
   <h1>Bonjour {{ firstName.toUpperCase() }} compteur : {{ count }}</h1>
   <!-- pas de .value dans {{  }}-->
@@ -30,6 +47,20 @@
 
 <script setup>
 import {ref} from 'vue'
+
+
+const todos = ref([])
+
+const newTodo = ref('')
+
+const addTodo = () => {
+  todos.value.push({
+    title: newTodo.value,
+    completed: false,
+    date: Date.now()
+})
+newTodo.value = ''
+}
 
 const person = ref({
   firstName: 'John',
