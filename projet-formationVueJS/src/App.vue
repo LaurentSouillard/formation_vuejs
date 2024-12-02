@@ -2,11 +2,11 @@
   <h1>TODO LIST</h1>
   <form action="" @submit.prevent="addTodo">
     <fieldset role="group">
-    <input type="text" placeholder="Tâche à effectuer" v-model="todo">
+    <input type="text" placeholder="Tâche à effectuer" v-model="newTodo">
     <button>Ajouter</button>
   </fieldset>
   </form>
-  <p v-if="todos.length = 0">La liste est vide</p>
+  <p v-if="todos.length == 0">La liste est vide</p>
   <div v-else>
   <ul>
     <li v-for="todo in todos">
@@ -14,6 +14,11 @@
     </li>
   </ul>
 </div>
+<p v-if="remainingTodos > 0">
+
+  {{ remainingTodos }} à faire
+
+</p>
 <hr>
 
 
@@ -26,10 +31,12 @@
   <div v-if="count < 5">Encore !</div>
   <div v-else-if="count > 5">Bravo !</div>
   <div v-else>Presque !</div>
-  <ul><li v-for="movie in movies" :key="movie">
+  <ul>
+    <li v-for="movie in movies" :key="movie">
 
-    {{ movie }} <button @click="deleteMovie(movie)">supprimer</button>
-  </li></ul>
+      {{ movie }} <button @click="deleteMovie(movie)">supprimer</button>
+    </li>
+  </ul>
   <button @click="sortMovies">Sort</button>
   <form action="" @submit.prevent="addMovie">
     <input type="text" placeholder="New" v-model="movieName"> {{ movieName }}
@@ -46,8 +53,13 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 
+const remainingTodos = computed(() => {
+  return todos.value.filter(t => t.completed == false).length
+})
+
+const todo = ref('')
 
 const todos = ref([])
 
