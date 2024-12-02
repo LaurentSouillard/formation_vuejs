@@ -1,5 +1,20 @@
 <template>
+  <Layout>
+    <template v-slot:header>
+      En-tête
+    </template>
+    <template v-slot:aside>
+      Côté
+    </template>
+    <template v-slot:main>
+      Principal
+    </template>
+    <template v-slot:footer>
+      Pied de page
+    </template>
+  </Layout>
   <h1>TODO LIST</h1>
+  <Button><strong>Demo</strong></Button>
   <form action="" @submit.prevent="addTodo">
     <fieldset role="group">
     <input type="text" placeholder="Tâche à effectuer" v-model="newTodo">
@@ -10,7 +25,11 @@
   <div v-else>
   <ul>
     <li v-for="todo in todos">
-      <label for="">{{ todo.title }}</label>
+      <!--<label for="">
+        <input type="checkbox" v-model="todo.completed">
+        {{ todo.title }}
+      </label>-->
+      <Checkbox :label="todo.title" class="class1" @check="" @uncheck=""/>
     </li>
   </ul>
 </div>
@@ -19,6 +38,7 @@
   {{ remainingTodos }} à faire
 
 </p>
+<Checkbox :label="'Bonjour'"/>
 <hr>
 
 
@@ -54,6 +74,9 @@
 
 <script setup>
 import {computed, ref} from 'vue'
+import Checkbox from './Checkbox.vue';
+import Button from './Button.vue';
+import Layout from './Layout.vue';
 
 const remainingTodos = computed(() => {
   return todos.value.filter(t => t.completed == false).length
